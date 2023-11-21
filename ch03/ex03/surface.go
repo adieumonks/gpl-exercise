@@ -13,6 +13,9 @@ const (
 	xyscale       = width / 2 / xyrange // x単位　および　y単位あたりの画素数
 	zscale        = height * 0.4        // z単位当たりの画素数
 	angle         = math.Pi / 6         // x,y軸の角度(=30度)
+	topc          = "#ff0000"
+	middlec       = "#00ff00"
+	bottomc       = "#0000ff"
 )
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle)
@@ -39,10 +42,25 @@ func main() {
 			if err != nil {
 				continue
 			}
-			fmt.Printf("<polygon points='%g %g %g %g %g %g %g %g'/>\n", ax, ay, bx, by, cx, cy, dx, dy)
+			z := top(i, j)
+			if z > 0.05 {
+				fmt.Printf("<polygon points='%g %g %g %g %g %g %g %g' style='fill:%s'/>\n", ax, ay, bx, by, cx, cy, dx, dy, topc)
+			} else if z < -0.05 {
+				fmt.Printf("<polygon points='%g %g %g %g %g %g %g %g' style='fill:%s'/>\n", ax, ay, bx, by, cx, cy, dx, dy, bottomc)
+			} else {
+				fmt.Printf("<polygon points='%g %g %g %g %g %g %g %g' style='fill:%s'/>\n", ax, ay, bx, by, cx, cy, dx, dy, middlec)
+			}
+
 		}
 	}
 	fmt.Println("</svg>")
+}
+
+func top(i, j int) float64 {
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+
+	return f(x, y)
 }
 
 func corner(i, j int) (float64, float64, error) {
