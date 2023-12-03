@@ -42,8 +42,8 @@ func TestReverse(t *testing.T) {
 			[]byte("界世 はちにんこ"),
 		},
 		{
-			[]byte("Hello World こんにちは 世界"),
-			[]byte("界世 はちにんこ dlroW olleH"),
+			[]byte("Hello World こんにちは 世界😀"),
+			[]byte("😀界世 はちにんこ dlroW olleH"),
 		},
 	}
 
